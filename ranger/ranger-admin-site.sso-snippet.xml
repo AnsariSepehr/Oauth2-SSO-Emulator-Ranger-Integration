@@ -1,0 +1,45 @@
+<!--
+  The ranger.sso.* block of /etc/ranger/admin/conf/ranger-admin-site.xml with SSO ENABLED.
+  Normally you do NOT edit by hand - run ranger/apply-sso-config.py (it backs up the file,
+  validates the certificate and the resulting XML). This file documents what the result looks like.
+
+  Everything else in the file (LDAP, JDBC, audit, kerberos ...) stays exactly as it was:
+  enabling SSO is additive and does NOT disable LDAP - see docs/04-ranger-integration.md.
+-->
+
+	<!-- URL Ranger redirects an unauthenticated BROWSER to. Ranger appends ?originalUrl=<page> -->
+	<property>
+		<name>ranger.sso.providerurl</name>
+		<value>http://sso.example.com/Identity/KnoxSso/Login</value>
+	</property>
+
+	<!-- Base64 BODY of a self-signed X.509 CERTIFICATE (not a raw public key!).
+	     Generate with:  npm run ranger-cert   (MASKED here on purpose) -->
+	<property>
+		<name>ranger.sso.publicKey</name>
+		<value>BASE64_X509_CERTIFICATE_BODY</value>
+	</property>
+
+	<property>
+		<name>ranger.sso.enabled</name>
+		<value>true</value>
+	</property>
+
+	<!-- Only requests whose User-Agent contains one of these are sent through SSO.
+	     curl / scripts / API clients keep using the normal LDAP/basic auth. -->
+	<property>
+		<name>ranger.sso.browser.useragent</name>
+		<value>Mozilla,chrome</value>
+	</property>
+
+	<!-- Must equal RANGER_COOKIE_NAME on the SSO server -->
+	<property>
+		<name>ranger.sso.cookiename</name>
+		<value>hadoop-jwt</value>
+	</property>
+
+	<!-- Query parameter carrying the page to return to -->
+	<property>
+		<name>ranger.sso.query.param.originalurl</name>
+		<value>originalUrl</value>
+	</property>

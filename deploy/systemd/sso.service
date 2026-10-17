@@ -1,0 +1,30 @@
+# /etc/systemd/system/sso.service
+#
+#   sudo useradd --system --home /opt/sso --shell /sbin/nologin sso
+#   sudo cp -r . /opt/sso && sudo chown -R sso:sso /opt/sso && sudo chmod 600 /opt/sso/.env
+#   sudo cp deploy/systemd/sso.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now sso
+#   journalctl -u sso -f
+[Unit]
+Description=OAuth2 / Knox SSO server
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sso
+Group=sso
+WorkingDirectory=/opt/sso
+EnvironmentFile=/opt/sso/.env
+ExecStart=/usr/bin/node src/server.js
+Restart=on-failure
+RestartSec=3
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
