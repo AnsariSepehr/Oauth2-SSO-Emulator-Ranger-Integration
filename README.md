@@ -1,4 +1,4 @@
-# sso-emulator-ranger-integration
+# oauth2-sso-emulator-ranger-integration
 
 > A custom **OAuth 2.0 SSO server** (Authorization Code + PKCE, client_credentials, UserInfo, JWKS, Discovery, Logout) in **Node.js / Express / PostgreSQL**, modelled on a bank "Smart SSO" - **plus a working Apache Ranger (Knox SSO) integration**, a Rocky Linux deployment guide, and an honest log of every bug we hit and how we fixed it.
 
